@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Book from './book';
 
 const BookShelf = props => (
   <div className="bookshelf">
@@ -7,7 +8,9 @@ const BookShelf = props => (
     <div className="bookshelf-books">
       <ol className="books-grid">
         {props.books.map(book => (
-          <p>{book.title}</p>
+          <li key={book.id}>
+            <Book book={book} />
+          </li>
         ))}
       </ol>
     </div>
