@@ -9,10 +9,11 @@ const Book = props => (
         src={props.book.imageLinks.thumbnail}
         alt={`Cover for ${props.book.title}`}
       />
+
       <div className="book-shelf-changer">
         <select
           value={props.book.shelf}
-          onChange={event => props.onShelfChange(props.book.id, event.target.value)}
+          onChange={event => props.onShelfChange(props.book, event.target.value)}
         >
           <option value="none" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
@@ -30,7 +31,6 @@ const Book = props => (
 Book.propTypes = {
   book: PropTypes.shape({
     authors: PropTypes.arrayOf(PropTypes.string).isRequired,
-    id: PropTypes.string.isRequired,
     imageLinks: PropTypes.objectOf(PropTypes.string).isRequired,
     shelf: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

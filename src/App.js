@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import Spinner from 'react-spinkit';
+
 import * as BooksAPI from './BooksAPI';
 import Home from './screens/home';
 import './App.css';
@@ -10,24 +12,31 @@ class BooksApp extends React.Component {
     this.handleShelfChange = this.handleShelfChange.bind(this);
     this.state = {
       books: [],
+      loading: false,
     };
   }
 
   componentDidMount() {
-    BooksAPI.getAll()
-      .then(response => this.setState({ books: response }));
+    this.fetchBooks();
   }
 
-  handleShelfChange(bookId, shelf) {
-    const books = this.state.books.map((book) => {
-      let newBook = null;
-      if (book.id === bookId) {
-        newBook = book;
-        newBook.shelf = shelf;
-      }
-      return newBook || book;
-    });
-    this.setState({ books });
+  shouldComponentUpdate() {
+    return true;
+  }
+
+  fetchBooks() {
+    this.setState({ loading: true });
+    BooksAPI.getAll()
+      .then(response => this.setState({ books: response, loading: false }))
+      .catch(() => this.setState({ loading: false }));
+  }
+
+  handleShelfChange(book, shelf) {
+    this.setState({ loading: true });
+
+    BooksAPI.update(book, shelf)
+      .then(() => this.fetchBooks())
+      .catch(() => this.setState({ loading: false }));
   }
 
   render() {
@@ -40,6 +49,12 @@ class BooksApp extends React.Component {
             <Home books={this.state.books} onShelfChange={this.handleShelfChange} />
           )}
         />
+
+        {this.state.loading &&
+          <div className="app-loading-overlay">
+            <Spinner className="app-loading-spinner" name="circle" fadeIn="0" color="#60ac5d" />
+          </div>
+        }
       </div>
     );
   }
