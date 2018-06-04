@@ -1,7 +1,7 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
-import Header from './components/header';
-import BookShelf from './components/bookshelf';
+import Home from './screens/home';
 import './App.css';
 
 class BooksApp extends React.Component {
@@ -16,10 +16,6 @@ class BooksApp extends React.Component {
   componentDidMount() {
     BooksAPI.getAll()
       .then(response => this.setState({ books: response }));
-  }
-
-  getBooksForShelf(shelfId) {
-    return this.state.books.filter(book => book.shelf === shelfId);
   }
 
   handleShelfChange(bookId, shelf) {
@@ -37,27 +33,13 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <div className="list-books">
-          <Header title="MyReads" />
-        </div>
-
-        <div className="list-books-content">
-          <BookShelf
-            title="Currently Reading"
-            books={this.getBooksForShelf('currentlyReading')}
-            onShelfChange={this.handleShelfChange}
-          />
-          <BookShelf
-            title="Want to Read"
-            books={this.getBooksForShelf('wantToRead')}
-            onShelfChange={this.handleShelfChange}
-          />
-          <BookShelf
-            title="Read"
-            books={this.getBooksForShelf('read')}
-            onShelfChange={this.handleShelfChange}
-          />
-        </div>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Home books={this.state.books} onShelfChange={this.handleShelfChange} />
+          )}
+        />
       </div>
     );
   }
