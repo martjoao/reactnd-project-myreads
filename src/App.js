@@ -51,11 +51,17 @@ class BooksApp extends React.Component {
           )}
         />
 
+        {
+          /*
+           * The 'this.state.books' array is passed to Search screen
+           * in order to properly select the current shelf on the dropdown
+           */
+        }
         <Route
           exact
           path="/search"
           render={() => (
-            <Search onShelfChange={this.handleShelfChange} />
+            <Search books={this.state.books} onShelfChange={this.handleShelfChange} />
           )}
         />
 

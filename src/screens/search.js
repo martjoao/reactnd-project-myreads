@@ -18,6 +18,11 @@ class Search extends React.Component {
     };
   }
 
+  getCurrentShelf(book) {
+    const bookOnShelf = this.props.books.find(item => book.id === item.id);
+    return bookOnShelf ? bookOnShelf.shelf : undefined;
+  }
+
   searchBooks(query) {
     if (!query) {
       this.setState({ books: [] });
@@ -29,7 +34,6 @@ class Search extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -48,7 +52,11 @@ class Search extends React.Component {
           <ol className="books-grid">
             {this.state.books.map(book => (
               <li key={book.id}>
-                <Book book={book} onShelfChange={this.props.onShelfChange} />
+                <Book
+                  book={book}
+                  onShelfChange={this.props.onShelfChange}
+                  shelf={this.getCurrentShelf(book)}
+                />
               </li>
             ))}
           </ol>
@@ -59,6 +67,9 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
+  books: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  })).isRequired,
   onShelfChange: PropTypes.func.isRequired,
 };
 
