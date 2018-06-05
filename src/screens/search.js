@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import { Link } from 'react-router-dom';
 
 import * as BooksAPI from '../BooksAPI';
@@ -8,17 +9,27 @@ import Book from '../components/book';
 class Search extends React.Component {
   constructor(props) {
     super(props);
+    this.searchBooks = debounce(this.searchBooks, 500, {
+      leading: false,
+      trailing: true,
+    });
     this.state = {
       books: [],
     };
   }
 
   searchBooks(query) {
+    if (!query) {
+      this.setState({ books: [] });
+      return;
+    }
     BooksAPI.search(query)
-      .then(response => this.setState({ books: response }));
+      .then(response => this.setState({ books: response instanceof Array ? response : [] }))
+      .catch(() => this.setState({ books: [] }));
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="search-books">
         <div className="search-books-bar">

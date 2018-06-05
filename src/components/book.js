@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import bookPlaceholder from '../images/book_placeholder.jpg';
 
 const Book = props => (
   <div className="book">
     <div className="book-top">
       <img
         className="book-cover"
-        src={props.book.imageLinks.thumbnail}
+        src={(props.book.imageLinks && props.book.imageLinks.thumbnail) || bookPlaceholder}
         alt={`Cover for ${props.book.title}`}
       />
 
       <div className="book-shelf-changer">
         <select
-          value={props.book.shelf}
+          value={props.book.shelf || 'none'}
           onChange={event => props.onShelfChange(props.book, event.target.value)}
         >
-          <option value="none" disabled>Move to...</option>
+          <option disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>
           <option value="read">Read</option>
@@ -31,7 +32,7 @@ const Book = props => (
 Book.propTypes = {
   book: PropTypes.shape({
     authors: PropTypes.arrayOf(PropTypes.string),
-    imageLinks: PropTypes.objectOf(PropTypes.string).isRequired,
+    imageLinks: PropTypes.objectOf(PropTypes.string),
     shelf: PropTypes.string,
     title: PropTypes.string.isRequired,
   }).isRequired,
