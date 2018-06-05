@@ -4,6 +4,7 @@ import Spinner from 'react-spinkit';
 
 import * as BooksAPI from './BooksAPI';
 import Home from './screens/home';
+import Search from './screens/search';
 import './App.css';
 
 class BooksApp extends React.Component {
@@ -50,9 +51,17 @@ class BooksApp extends React.Component {
           )}
         />
 
+        <Route
+          exact
+          path="/search"
+          render={() => (
+            <Search onShelfChange={this.handleShelfChange} />
+          )}
+        />
+
         {this.state.loading &&
           <div className="app-loading-overlay">
-            <Spinner className="app-loading-spinner" name="circle" fadeIn="0" color="#60ac5d" />
+            <Spinner className="app-loading-spinner" name="circle" fadeIn="none" color="#60ac5d" />
           </div>
         }
       </div>

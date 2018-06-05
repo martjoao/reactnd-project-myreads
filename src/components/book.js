@@ -24,15 +24,15 @@ const Book = props => (
       </div>
     </div>
     <div className="book-title">{props.book.title}</div>
-    <div className="book-authors">{props.book.authors.join(' and ')}</div>
+    <div className="book-authors">{props.book.authors && props.book.authors.join(' and ')}</div>
   </div>
 );
 
 Book.propTypes = {
   book: PropTypes.shape({
-    authors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    authors: PropTypes.arrayOf(PropTypes.string),
     imageLinks: PropTypes.objectOf(PropTypes.string).isRequired,
-    shelf: PropTypes.string.isRequired,
+    shelf: PropTypes.string,
     title: PropTypes.string.isRequired,
   }).isRequired,
   onShelfChange: PropTypes.func.isRequired,
