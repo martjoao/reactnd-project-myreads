@@ -48,7 +48,8 @@ body, .app {
   right: 25px;
   bottom: 25px;
 }
-.open-search a {
+
+.floating-button {
   display: block;
   width: 50px;
   height: 50px;
@@ -60,6 +61,14 @@ body, .app {
   background-size: 28px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   font-size: 0;
+  cursor: pointer;
+}
+
+.clear-shelves {
+  position: fixed;
+  right: 83px;
+  bottom: 25px;
+  transform: rotate(45deg);
 }
 
 /* search page */

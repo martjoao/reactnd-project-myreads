@@ -31,9 +31,21 @@ const Home = props => (
       />
     </div>
     <div className="open-search">
-      <Link to="/search">
+      <Link
+        to="/search"
+        title="Add a book"
+        className="floating-button"
+      >
         Add a book
       </Link>
+    </div>
+
+    <div className="clear-shelves">
+      <link
+        onClick={props.onClearShelves}
+        title="Clear all shelves"
+        className="floating-button"
+      />
     </div>
   </div>
 );
@@ -41,6 +53,7 @@ const Home = props => (
 Home.propTypes = {
   books: PropTypes.arrayOf(PropTypes.object).isRequired,
   onShelfChange: PropTypes.func.isRequired,
+  onClearShelves: PropTypes.func.isRequired,
 };
 
 export default Home;

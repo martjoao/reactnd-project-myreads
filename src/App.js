@@ -10,7 +10,8 @@ import './App.css';
 class BooksApp extends React.Component {
   constructor(props) {
     super(props);
-    this.handleShelfChange = this.handleShelfChange.bind(this);
+    this.changeShelf = this.changeShelf.bind(this);
+    this.clearShelves = this.clearShelves.bind(this);
     this.state = {
       books: [],
       loading: false,
@@ -25,19 +26,35 @@ class BooksApp extends React.Component {
     return true;
   }
 
-  fetchBooks() {
+  async fetchBooks() {
     this.setState({ loading: true });
-    BooksAPI.getAll()
-      .then(response => this.setState({ books: response, loading: false }))
-      .catch(() => this.setState({ loading: false }));
+    try {
+      const response = await BooksAPI.getAll();
+      this.setState({ books: response });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
-  handleShelfChange(book, shelf) {
+  async changeShelf(book, shelf) {
     this.setState({ loading: true });
+    try {
+      await BooksAPI.update(book, shelf);
+      await this.fetchBooks();
+    } finally {
+      this.setState({ loading: false });
+    }
+  }
 
-    BooksAPI.update(book, shelf)
-      .then(() => this.fetchBooks())
-      .catch(() => this.setState({ loading: false }));
+  async clearShelves() {
+    if (!this.state.books || this.state.books.length === 0) return;
+    this.setState({ loading: true });
+    try {
+      await this.state.books.forEach(book => BooksAPI.update(book, 'none'));
+      await this.fetchBooks();
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
@@ -47,7 +64,11 @@ class BooksApp extends React.Component {
           exact
           path="/"
           render={() => (
-            <Home books={this.state.books} onShelfChange={this.handleShelfChange} />
+            <Home
+              books={this.state.books}
+              onShelfChange={this.changeShelf}
+              onClearShelves={this.clearShelves}
+            />
           )}
         />
 
@@ -61,13 +82,18 @@ class BooksApp extends React.Component {
           exact
           path="/search"
           render={() => (
-            <Search books={this.state.books} onShelfChange={this.handleShelfChange} />
+            <Search books={this.state.books} onShelfChange={this.changeShelf} />
           )}
         />
 
         {this.state.loading &&
           <div className="app-loading-overlay">
-            <Spinner className="app-loading-spinner" name="circle" fadeIn="none" color="#60ac5d" />
+            <Spinner
+              className="app-loading-spinner"
+              name="circle"
+              fadeIn="none"
+              color="#60ac5d"
+            />
           </div>
         }
       </div>
