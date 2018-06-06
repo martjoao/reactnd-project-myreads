@@ -1,5 +1,5 @@
 {
-  "homepage":"https://martjoao.github.io/reactnd-project-myreads",
+  "homepage": "https://martjoao.github.io/reactnd-project-myreads/",
   "dependencies": {
     "gh-pages": "^1.2.0",
     "lodash.debounce": "^4.0.8",
