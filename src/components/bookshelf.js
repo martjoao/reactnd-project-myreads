@@ -7,6 +7,9 @@ const BookShelf = props => (
     <h2 className="bookshelf-title">{props.title}</h2>
     <div className="bookshelf-books">
       <ol className="books-grid">
+        {(!props.books || props.books.length === 0) &&
+          <h3>This shelf is empty</h3>
+        }
         {props.books.map(book => (
           <li key={book.id}>
             <Book book={book} onShelfChange={props.onShelfChange} />

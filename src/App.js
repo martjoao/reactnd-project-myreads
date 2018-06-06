@@ -50,7 +50,8 @@ class BooksApp extends React.Component {
     if (!this.state.books || this.state.books.length === 0) return;
     this.setState({ loading: true });
     try {
-      await this.state.books.forEach(book => BooksAPI.update(book, 'none'));
+      await Promise.all(this.state.books.map(book =>
+        BooksAPI.update(book, 'none')));
       await this.fetchBooks();
     } finally {
       this.setState({ loading: false });
