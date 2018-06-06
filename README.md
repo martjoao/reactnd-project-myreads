@@ -1,4 +1,4 @@
-This project was developed as the first programming assignment for the Udacity React Nanodegree program.
+This project was developed as the first programming assignment for the Udacity React Nanodegree program. Click [here](https://martjoao.github.io/reactnd-project-myreads/) to check it out.
 
 ----
 
